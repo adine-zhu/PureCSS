@@ -1,0 +1,90 @@
+@mixin clearfix($name:'.clearfix') {
+  #{$name}{
+	  display : block ; 
+	  &:after {
+		content:'\0020';
+		clear:both;
+		height:0;
+		display:block;
+		overflow:hidden;
+		visibility:hidden;
+	  }  
+  }
+
+  * html #{$name}{
+   display:inline-block;
+	height : 1%; 
+  }
+}
+
+@mixin float{
+	.clear {
+      clear : both;
+    }
+    .left { 
+      float : left ; 
+    }
+    .right { 
+      float : right ; 
+    }
+}
+
+@mixin position{
+	.relative{
+      display:block;
+      position:relative;
+    }
+
+    .absolute{
+      position:absolute;
+    }
+
+    * html a.absolute, * + html a.absolute {
+      background-image:url(about:blank) fixed;
+    }
+}
+
+@mixin box{
+    .block {
+      display:block;
+    }
+
+    .inline{
+      display:inline;
+    }
+
+    .inline-block{
+      display:inline-block;
+    }
+
+    .hide{
+      display:none;
+    }
+}
+
+@mixin common{
+	.w{
+		width:100%;
+	}
+	
+    .h{ 
+      height:100%;
+    }
+
+    * html .empty{
+      line-height:0;
+      font-size:0;
+      background-image:url(about:blank) fixed;
+    }
+
+    .ellipsis{
+          white-space:nowrap;
+          text-overflow:ellipsis;
+          -o-text-overflow:ellipsis; /* for opera */
+          overflow:hidden;
+          display:block;
+          float:left;
+    }
+
+    .ellipsis:after{content:'...'}
+}

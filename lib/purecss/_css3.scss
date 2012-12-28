@@ -1,0 +1,13 @@
+//‘≤Ω«
+@mixin border_radius($radius:5px){
+	-moz-border-radius:$radius;
+	 -webkit-border-radius:$radius;
+	 border-radius:$radius;
+}
+//“ı”∞
+@mixin box-shadow($x, $y, $radius, $color){
+	-moz-box-shadow: $x $y $radius $color;
+	-webkit-box-shadow: $x $y $radius $color;
+	-o-box-shadow: $x $y $radius $color;
+	box-shadow: $x $y $radius $color;
+}

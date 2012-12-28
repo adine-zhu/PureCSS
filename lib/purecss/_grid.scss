@@ -1,0 +1,132 @@
+@charset "utf-8";
+
+@mixin container( $width : 1000, $margin-bottom : 0) {
+  text-align:left;
+	margin-left:auto;
+	margin-right:auto;
+  width : #{$width}px ;
+  margin-bottom : #{$margin-bottom}px;
+
+  //@include clearfix;
+}
+
+// $flowline 总宽度
+$grid_flowline:1000 !default;
+
+// $grid_maxnum 总网格数
+$grid_maxnum:25 !default;
+
+// $gutter 网格间距
+$grid_gutter:0 !default;
+
+$grid_width: ( $grid_flowline + $grid_gutter ) / $grid_maxnum - $grid_gutter;
+
+//////////////////////////
+
+
+@mixin pl($num-columns, $grid-unit, $grid-gutter){
+	padding-left : #{$num-columns * ( $grid-unit + $grid-gutter)}px ;
+ }
+
+@mixin pr($num-columns, $grid-unit, $grid-gutter){
+	padding-right : #{$num-columns * ( $grid-unit + $grid-gutter) - $grid-gutter}px ;
+}
+
+@mixin ml($num-columns, $grid-unit, $grid-gutter){
+	margin-left:#{$num-columns * ( $grid-unit + $grid-gutter)}px;
+}
+@mixin mr($num-columns, $grid-unit, $grid-gutter){
+	margin-right:#{$num-columns * ( $grid-unit + $grid-gutter) - $grid-gutter}px;
+}
+
+
+// $serial_number 序号
+// $grid_unit_width 网格单元宽度
+// $gutter 网格间距
+@mixin grid($serial_number,$grid_unit_width, $gutter){
+  display:block;
+  float:left;
+  width: #{$serial_number * $grid_unit_width + ($serial_number - 1) * $gutter}px;
+  margin-right: #{$gutter}px;
+  
+  // ie hack
+  * html & {
+	display:inline;
+  }
+}
+
+@mixin last-grid{
+	margin-right:0;
+	clear:right !important;
+}
+
+//生成网格容器名
+@function build-container-name($flowline,$maxnum,$gutter){
+	@if($gutter ==0){
+		@return ".c-#{$flowline}-#{$maxnum}"
+	}
+	@else{
+		@return ".c-#{$flowline}-#{$maxnum}-#{$gutter}"
+	}
+}
+
+//批量生成网格
+// $flowline 总宽度
+// $maxnum 总网格数
+// $gutter 网格间距
+@mixin build-grids($flowline, $maxnum, $gutter){
+	$grid_unit_width : ( $flowline + $gutter ) / $maxnum - $gutter;
+	
+	//#{build-container-name($flowline, $maxnum, $gutter)} {
+    .container {
+		@include container($flowline,0);
+        
+    //{{{clearfix star
+        display : block ;
+        &:after {
+            content:'\0020';
+            clear:both;
+            height:0;
+            display:block;
+            overflow:hidden;
+            visibility:hidden;
+        }
+        * html &{
+            display:inline-block;
+            height : 1%;     
+        }
+    //clearfix end }}}
+		
+		
+		//@for $i from 1 through $maxnum{
+		//	.g-#{$i}{
+		//		@include grid($i, $grid_unit_width, $gutter);
+		//	}
+		//	
+		//	@if $i == $maxnum {
+		//		.g-#{$i}, .last{
+		//			@include last-grid;
+		//		}
+		//	}
+		//}
+		
+		$grids_name : '';
+		@for $i from 1 through $maxnum{
+			$grids_name : $grids_name+".g-#{$i}"+",";
+			.g-#{$i}{
+				width: #{$i * $grid_unit_width + ($i - 1) * $gutter}px;
+			}
+		}
+		#{$grids_name}{
+			display:block;
+			float:left;
+			margin-right: #{$gutter}px;
+			* html & {
+				display:inline;
+			}
+		}
+		
+		//@todo ml
+		//@todo mr
+	}
+}
